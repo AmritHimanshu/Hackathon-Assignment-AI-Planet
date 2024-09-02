@@ -1,4 +1,5 @@
 import React from 'react';
+import ExploreChallenges from './ExploreChallenges';
 
 function ChallengesList() {
 
@@ -79,7 +80,7 @@ function ChallengesList() {
                 <div className='grid grid-cols-2 gap-y-10 place-items-center w-[1119px] m-auto'>
                     {
                         reasons.map((reason,index)=>(
-                            <div className='py-14 px-10 bg-gray-100/70 rounded-lg w-[530px] h-[276px] space-y-5'>
+                            <div key={index} className='py-14 px-10 bg-gray-100/70 rounded-lg w-[530px] h-[276px] space-y-5'>
                                 <div>
                                     <img src={reason.imagePath} alt="" />
                                 </div>
@@ -90,6 +91,8 @@ function ChallengesList() {
                     }
                 </div>
             </div>
+
+            <ExploreChallenges />
         </div>
     )
 }
