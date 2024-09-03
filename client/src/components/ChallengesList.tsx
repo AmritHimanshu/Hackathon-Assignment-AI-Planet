@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ExploreChallenges from './ExploreChallenges';
 
 function ChallengesList() {
@@ -33,7 +34,7 @@ function ChallengesList() {
                     <p className='px-16 py-10 text-[20px]'>
                         AI Challenges at DPhi simulate real-world problems. It is a great place to put your AI/Data Science skills to test on diverse datasets allowing you to faster learning through competitions.
                     </p>
-                    <button className='ml-16 px-5 py-2 text-[20px] font-semibold rounded-md bg-white text-[#003145]'>Create Challenge</button>
+                    <Link to="/create-challenge" className='ml-16 px-5 py-2 text-[20px] font-semibold rounded-md bg-white text-[#003145]'>Create Challenge</Link>
                 </div>
 
                 <div>
