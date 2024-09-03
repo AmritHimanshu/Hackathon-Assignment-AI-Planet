@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Challenge } from './ExploreChallenges';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
@@ -8,6 +8,56 @@ type ChallengeCardProps = {
   };
 
 function ChallengeCard({ challenge, idx }: ChallengeCardProps) {
+
+    const [eventTime,setEventTime] = useState('');
+    const [timer, setTimer] = useState('');
+
+    useEffect(() => {
+        const now = new Date();
+        const startDate = new Date(challenge.start_date);
+        const endDate = new Date(challenge.end_date);
+
+        if (now > endDate) {
+            setEventTime('Past');
+        } else if (now < startDate) {
+            setEventTime('Upcoming');
+            updateTimer(startDate);
+        } else {
+            setEventTime('Active');
+            updateTimer(endDate);
+        }
+    }, [challenge.start_date, challenge.end_date]);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout | null = null;
+
+        if (eventTime === 'Upcoming' || eventTime === 'Active') {
+            interval = setInterval(() => {
+                const targetDate = eventTime === 'Upcoming' ? new Date(challenge.start_date) : new Date(challenge.end_date);
+                updateTimer(targetDate);
+            }, 1000);
+        }
+
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [eventTime, challenge.start_date, challenge.end_date]);
+
+    function updateTimer(targetDate: Date) {
+        const now = new Date();
+        const timeRemaining = targetDate.getTime() - now.getTime();
+
+        if (timeRemaining > 0) {
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            setTimer(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+        } else {
+            setTimer('00d 00h 00m 00s');
+        }
+    };
 
     function formatDate(dateStr: string): string {
         const date = new Date(dateStr);
@@ -40,19 +90,39 @@ function ChallengeCard({ challenge, idx }: ChallengeCardProps) {
   return (
     <div className="w-[354px] bg-white text-black rounded-xl">
         <div className="h-[176px] overflow-hidden">
-            <img src="/assets/cardimage/Group 1000002466.png" alt="" />
+            <img src={challenge.file} alt="" />
         </div>
         <div className="text-center py-7 space-y-4">
-            <p className="px-7 py-[1px] bg-[#FF3C00] bg-opacity-20 max-w-min m-auto rounded-sm text-[14px]">
-                Past
+            <p className={`px-7 py-[1px] ${eventTime === 'Past' && 'bg-[#FF3C00]'} ${eventTime === 'Upcoming' && 'bg-yellow-400'} ${eventTime === 'Active' && 'bg-green-400'} bg-opacity-20 max-w-min m-auto rounded-sm text-[14px]`}>
+                {eventTime}
             </p>
             <div className="font-bold w-[244px] m-auto text-[16px]">
                 {challenge.challenge_name}
             </div>
-            <p>Ended on</p>
-            <p className="text-[18px] font-bold text-gray-600">
-                {formatDate(challenge.end_date)}
-            </p>
+            {eventTime === 'Past' && (
+                <>
+                    <p>Ended on</p>
+                    <p className="text-[18px] font-bold text-gray-600">
+                        {formatDate(challenge.end_date)}
+                    </p>
+                </>
+            )}
+            {eventTime === 'Active' && (
+                <>
+                    <p>Ends in</p>
+                    <p className="text-[18px] font-bold text-gray-600">
+                        {timer}
+                    </p>
+                </>
+            )}
+            {eventTime === 'Upcoming' && (
+                <>
+                    <p>Starts on</p>
+                    <p className="text-[18px] font-bold text-gray-600">
+                        {timer}
+                    </p>
+                </>
+            )}
             <button className="bg-green-700 text-white text-[16px] font-semibold px-5 py-2 rounded-md space-x-4">
                 <TaskAltIcon sx={{ fontSize: "18px" }} />
                 <span>Participate Now</span>
