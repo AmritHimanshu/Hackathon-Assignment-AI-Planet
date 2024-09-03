@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 function CreateChallenge() {
+
+    const navigate = useNavigate();
 
     const [challengeData, setChallengeData] = useState<{
         challenge_name: string;
@@ -15,8 +19,11 @@ function CreateChallenge() {
         end_date: '',
         description: '',
         file: null,
-        level: 'easy'
+        level: 'Easy'
     });
+
+    const [message, setMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>)=>{
         let name = e.target.name;
@@ -27,17 +34,73 @@ function CreateChallenge() {
         } else {
             setChallengeData(prevState => ({ ...prevState, [name]: value }));
         }
-    }
+    };
+
+    const handleOnSubmit = async (e: any)=>{
+        e.preventDefault();
+        const {challenge_name, start_date, end_date, description, file, level} = challengeData;
+        if(!challenge_name || !start_date || !end_date || !description || !file || !level){
+            alert("Fill all the fields");
+            return;
+        }
+
+        setIsLoading(true);
+        const form = new FormData();
+        form.append("file", file);
+        form.append("upload_preset", "kfgw6ech");
+        try {
+            const resCloudinary = await fetch(`https://api.cloudinary.com/v1_1/dgvvfyeji/raw/upload`, {
+                method: "POST",
+                body: form,
+              });
+        
+              const dataCloudinary = await resCloudinary.json();
+              if (dataCloudinary && dataCloudinary.url){
+
+                let listObj = [];
+                let list = localStorage.getItem('challenge-list');
+                if(list == null) listObj = [];
+                else listObj = JSON.parse(list);
+                listObj.push({challenge_name, start_date, end_date, description, file:`${dataCloudinary.url}`, level});
+                localStorage.setItem("challenge-list", JSON.stringify(listObj));
+
+                setMessage("Successfully created");
+                setTimeout(()=>{
+                    setMessage("");
+                    navigate('/');
+                },2000);
+
+                setChallengeData({
+                    challenge_name: '',
+                    start_date: '',
+                    end_date: '',
+                    description: '',
+                    file: null,
+                    level: 'easy'
+                });
+
+                setIsLoading(false);
+              }
+        } catch (error) {
+            console.log(error);
+            alert(error);
+        }
+    };
 
     return (
-        <div>
+        <div className='relative'>
+            {message && (
+                <div className={`sticky top-0 z-50 w-full p-4 text-[20px] text-black font-[500] ${message === "Successfully created" && "bg-green-300" }`}>
+                    {message}
+                </div>
+            )}
             <div className='px-20 py-5 font-semibold text-[18px]'>
                 DPhi
             </div>
             <div className='px-20 py-9 font-semibold text-[25px] bg-slate-100'>
                 Challenge Details
             </div>
-            <form className='px-20 py-10 space-y-'>
+            <form className='px-20 py-10'>
                 <div className='space-y-4 text-[17px] mb-8'>
                     <label htmlFor="challenge_name" className='block font-medium'>Challenge Name</label>
                     <input type="text" id="challenge_name" name="challenge_name" value={challengeData.challenge_name} onChange={handleOnChange} placeholder="Challenge Name" className='border-[1px] border-neutral-400 rounded-md w-[500px] p-2 outline-0' />
@@ -67,7 +130,7 @@ function CreateChallenge() {
                         <option value="Hard" >Hard</option>
                     </select>
                 </div>
-                <button className='bg-green-700 text-white text-[17px] font-semibold px-10 py-3 mt-10 rounded-md' >Create Challenge</button>
+                <button className='bg-green-700 text-white text-[17px] font-semibold px-5 py-3 mt-10 rounded-md' onClick={handleOnSubmit} >{isLoading && <AutorenewIcon className='animate-spin' />} Create Challenge</button>
             </form>
         </div>
     )
