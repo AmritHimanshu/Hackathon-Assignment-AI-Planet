@@ -68,7 +68,7 @@ function CreateChallenge() {
                 setTimeout(()=>{
                     setMessage("");
                     navigate('/');
-                },2000);
+                },1000);
 
                 setChallengeData({
                     challenge_name: '',

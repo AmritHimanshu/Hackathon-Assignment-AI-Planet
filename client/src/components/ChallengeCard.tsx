@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Challenge } from './ExploreChallenges';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
@@ -8,6 +9,8 @@ type ChallengeCardProps = {
   };
 
 function ChallengeCard({ challenge, idx }: ChallengeCardProps) {
+
+    const navigate = useNavigate();
 
     const [eventTime,setEventTime] = useState('');
     const [timer, setTimer] = useState('');
@@ -87,6 +90,11 @@ function ChallengeCard({ challenge, idx }: ChallengeCardProps) {
         }
     };
 
+    const handleToShow = ()=>{
+        const queryParams = new URLSearchParams(challenge).toString();
+        navigate(`/challenge-detail/${idx}?${queryParams}`);
+    };
+
   return (
     <div className="w-[354px] bg-white text-black rounded-xl">
         <div className="h-[176px] overflow-hidden">
@@ -123,7 +131,7 @@ function ChallengeCard({ challenge, idx }: ChallengeCardProps) {
                     </p>
                 </>
             )}
-            <button className="bg-green-700 text-white text-[16px] font-semibold px-5 py-2 rounded-md space-x-4">
+            <button className="bg-green-700 text-white text-[16px] font-semibold px-5 py-2 rounded-md space-x-4" onClick={handleToShow}>
                 <TaskAltIcon sx={{ fontSize: "18px" }} />
                 <span>Participate Now</span>
             </button>
