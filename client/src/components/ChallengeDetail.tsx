@@ -2,31 +2,57 @@ import { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-function ChallengeDetails (){
-
+function ChallengeDetails() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const dataObj = Object.fromEntries(queryParams.entries());
-    const data = JSON.stringify(dataObj);
-
+    
     const params = useParams();
     const navigate = useNavigate();
 
     const [challenge, setChallenge] = useState(dataObj);
 
+    const start_date = new Date(challenge.start_date);
+    const end_date = new Date(challenge.end_date);
+
+    const getEventStatus = (start_date: Date, end_date: Date) => {
+        const currentDate = new Date();
+
+        if (currentDate < start_date) {
+            return "Upcoming";
+        } else if (currentDate >= start_date && currentDate <= end_date) {
+            return "Active";
+        } else {
+            return "Past";
+        }
+    };
+
+    const eventStatus = getEventStatus(start_date, end_date);
+
+    const formatDate = (date: Date) => {
+        return date.toLocaleString('en-US', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        });
+    };
+
     const handleOnEdit = () => {
-        const queryParams = new URLSearchParams(challenge).toString();
-        navigate(`/edit-challenge/${parseInt(params.idx || '0',10)}?${queryParams}`);
+        const queryParams = new URLSearchParams(dataObj).toString();
+        navigate(`/edit-challenge/${parseInt(params.idx || '0', 10)}?${queryParams}`);
     }
 
     const handleOnDelete = () => {
         let listObj = [];
         let list = localStorage.getItem('challenge-list');
-        if(list == null) listObj = [];
+        if (list == null) listObj = [];
         else {
             listObj = JSON.parse(list);
             const updatedList = listObj.filter((_:any, index:number) => index !== parseInt(params.idx || '0', 10));
-            localStorage.setItem('challenge-list',JSON.stringify(updatedList));
+            localStorage.setItem('challenge-list', JSON.stringify(updatedList));
         }
         navigate('/');
     };
@@ -38,9 +64,17 @@ function ChallengeDetails (){
             </div>
 
             <div className="p-32 bg-[#003145] text-white space-y-6 cursor-default">
-                <div className='px-3 py-2 bg-yellow-300  text-black w-[464px] rounded-md font-semibold flex items-center space-x-2'>
-                    <AccessTimeIcon sx={{fontSize:"18px"}}/> <span>Starts on 17th June'22 09:00 PM (Indian Standard Time)</span>
+                <div className='px-3 py-2 bg-yellow-300 text-black w-[550px] rounded-md font-semibold flex items-center space-x-2'>
+                    <AccessTimeIcon sx={{ fontSize: "18px" }} />
+                    <span>
+                        {eventStatus === "Upcoming" && `Starts on ${formatDate(start_date)} (Indian Standard Time)`}
+
+                        {eventStatus === "Active" && `Ongoing - Started on ${formatDate(start_date)} (Indian Standard Time)`}
+
+                        {eventStatus === "Past" && `Ended on ${formatDate(end_date)} (Indian Standard Time)`}
+                    </span>
                 </div>
+
                 <div className='text-[42px] font-bold'>
                     <p>{challenge.challenge_name}</p>
                 </div>
@@ -62,18 +96,10 @@ function ChallengeDetails (){
             </div>
 
             <div className='px-32 py-20'>
-                {/* <p className='whitespace-pre-wrap w-[956px] font-semibold text-[18px] text-[#64607D] leading-10'>
-                    Butterflies are the adult flying stage of certain insects belonging to an order or group called Lepidoptera. The word "Lepidoptera" means "scaly wings" in Greek. This name perfectly suits the insects in this group because their wings are covered with thousands of tiny scales overlapping in rows.
-
-                    An agency of the Governmental Wildlife Conservation is planning to implement an automated system based on computer vision so that it can identify butterflies based on captured images. As a consultant for this project, you are responsible for developing an efficient model.
-
-                    Your Task is to build an Image Classification Model using CNN that classifies to which class of weather each image belongs to.
-                </p> */}
                 <p className='whitespace-pre-wrap w-[956px] font-semibold text-[18px] text-[#64607D] leading-10'>{challenge.description}</p>
             </div>
-
         </div>
-    )
+    );
 }
 
 export default ChallengeDetails;
