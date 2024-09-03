@@ -1,6 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function CreateChallenge() {
+
+    const [challengeData, setChallengeData] = useState<{
+        challenge_name: string;
+        start_date: string;
+        end_date: string;
+        description: string;
+        file: File | null;
+        level: string;
+    }>({
+        challenge_name: '',
+        start_date: '',
+        end_date: '',
+        description: '',
+        file: null,
+        level: ''
+    });
+
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>{
+        let name = e.target.name;
+        let value = e.target.value;
+        if (e.target instanceof HTMLInputElement && e.target.type === 'file') {
+            const file = e.target.files ? e.target.files[0] : null;
+            setChallengeData(prevState => ({ ...prevState, file: file }));
+        } else {
+            setChallengeData(prevState => ({ ...prevState, [name]: value }));
+        }
+    }
+
     return (
         <div>
             <div className='px-20 py-5 font-semibold text-[18px]'>
@@ -12,23 +40,23 @@ function CreateChallenge() {
             <form className='px-20 py-10 space-y-8'>
                 <div className='space-y-4 text-[17px]'>
                     <label htmlFor="challenge_name" className='block font-medium'>Challenge Name</label>
-                    <input type="text" id="challenge_name" name="challenge_name" placeholder="Challenge Name" className='border-[1px] border-neutral-400 rounded-md w-[500px] p-2 outline-0' />
+                    <input type="text" id="challenge_name" name="challenge_name" value={challengeData.challenge_name} onChange={handleOnChange} placeholder="Challenge Name" className='border-[1px] border-neutral-400 rounded-md w-[500px] p-2 outline-0' />
                 </div>
                 <div className='space-y-4 text-[17px]'>
                     <label htmlFor="start_date" className='block font-medium'>Start Date</label>
-                    <input type="date" id="start_date" name="start_date" placeholder="Add start date" className='border-[1px] border-neutral-400 rounded-md w-[500px] p-2 outline-0' />
+                    <input type="date" id="start_date" name="start_date" value={challengeData.start_date} onChange={handleOnChange} placeholder="Add start date" className='border-[1px] border-neutral-400 rounded-md w-[500px] p-2 outline-0' />
                 </div>
                 <div className='space-y-4 text-[17px]'>
                     <label htmlFor="end_date" className='block font-medium'>End Date</label>
-                    <input type="date" id="end_date" name="end_date" placeholder="Add end date" className='border-[1px] border-neutral-400 rounded-md w-[500px] p-2 outline-0' />
+                    <input type="date" id="end_date" name="end_date" value={challengeData.end_date} onChange={handleOnChange} placeholder="Add end date" className='border-[1px] border-neutral-400 rounded-md w-[500px] p-2 outline-0' />
                 </div>
                 <div className='space-y-4 text-[17px]'>
                     <label htmlFor="description" className='block font-medium'>Description</label>
-                    <textarea id="description" name="description" className='resize-none border-[1px] border-neutral-400 rounded-md w-[800px] h-[300px] p-2 outline-0' ></textarea>
+                    <textarea id="description" name="description" value={challengeData.description} onChange={handleOnChange} className='resize-none border-[1px] border-neutral-400 rounded-md w-[800px] h-[300px] p-2 outline-0' ></textarea>
                 </div>
                 <div className='space-y-4 text-[17px]'>
                     <label className='block font-medium'>Image</label>
-                    <input type="file" id="file" name="file" className='border-2'/>
+                    <input type="file" id="file" name="file" onChange={handleOnChange} className='border-2'/>
                 </div>
                 <div className='space-y-4 text-[17px]'>
                     <label className='block font-medium'>Level Type</label>
