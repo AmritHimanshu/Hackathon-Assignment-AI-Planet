@@ -1,12 +1,14 @@
 import React from 'react';
+import ChallengeDetails from './components/ChallengeDetail';
 // import CreateChallenge from './components/CreateChallenge';
-import ChallengesList from './components/ChallengesList';
+// import ChallengesList from './components/ChallengesList';
 
 function App() {
     return (
       <div className="">
         {/* <CreateChallenge /> */}
-        <ChallengesList />
+        {/* <ChallengesList /> */}
+        <ChallengeDetails />
       </div>
     );
 }
