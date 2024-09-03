@@ -32,7 +32,6 @@ function EditChallenge() {
 
     const handleOnSubmit = async (e: any) => {
         e.preventDefault();
-        // console.log('Challenge ',challenge)
         let {challenge_name, start_date, end_date, description, file, level} = challenge;
         const { fileData } = fileNew; 
         if(!challenge_name || !start_date || !end_date || !description || !file || !level ){
@@ -68,7 +67,6 @@ function EditChallenge() {
                     listObj[idx] = updatedData;
                     localStorage.setItem('challenge-list',JSON.stringify(listObj));
                 }
-                // console.log('updatedData ',updatedData);
                 setIsLoading(false);
                 setMessage("Successfully created");
                 setTimeout(()=>{
@@ -120,8 +118,9 @@ function EditChallenge() {
                 </div>
                 <div className='space-y-4 text-[17px] my-8'>
                     <label className='block font-medium'>Level Type</label>
-                    <select id="level" name="level" className='p-2 bg-transparent border-[1px] border-neutral-400 rounded-md w-[200px] outline-0 cursor-pointer' 
+                    <select id="level" name="level" value={challenge.level} className='p-2 bg-transparent border-[1px] border-neutral-400 rounded-md w-[200px] outline-0 cursor-pointer' 
                     onChange={handleOnChange}>
+                        <option value="">Select level</option>
                         <option value="Easy" >Easy</option>
                         <option value="Medium" >Medium</option>
                         <option value="Hard" >Hard</option>

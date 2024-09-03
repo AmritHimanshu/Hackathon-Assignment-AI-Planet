@@ -19,7 +19,7 @@ function CreateChallenge() {
         end_date: '',
         description: '',
         file: null,
-        level: 'Easy'
+        level: ''
     });
 
     const [message, setMessage] = useState('');
@@ -125,6 +125,7 @@ function CreateChallenge() {
                     <label className='block font-medium'>Level Type</label>
                     <select id="level" name="level" className='p-2 bg-transparent border-[1px] border-neutral-400 rounded-md w-[200px] outline-0 cursor-pointer' 
                     onChange={handleOnChange}>
+                        <option value="">Select level</option>
                         <option value="Easy" >Easy</option>
                         <option value="Medium" >Medium</option>
                         <option value="Hard" >Hard</option>
