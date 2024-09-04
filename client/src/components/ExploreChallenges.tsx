@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -14,6 +14,8 @@ export type Challenge = {
 };
 
 function ExploreChallenges() {
+
+    const filterRef = useRef<HTMLDivElement>(null);
 
     const [isFilter,setIsFilter] = useState(false);
     const [challengeList, setChallengeList] = useState<Challenge[]>();
@@ -88,6 +90,19 @@ function ExploreChallenges() {
         return '';
     };
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+                setIsFilter(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [filterRef]);
+
     return (
         <div>
             <div className='bg-[#002A3B] text-white py-8 xl:py-16 space-y-8 xl:space-y-16'>
@@ -98,7 +113,7 @@ function ExploreChallenges() {
                         <input type="text" name="" id="" placeholder='Search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className='w-[300px] xl:w-[700px] outline-0 text-black bg-transparent px-3 py-[4px] xl:py-3 text-[16px] xl:text-[18px]'/>
                     </div>
 
-                    <div className='relative max-w-min m-auto'>
+                    <div ref={filterRef} className='relative max-w-min m-auto'>
                         <div className='bg-white text-black w-[100px] m-auto xl:w-[180px] flex items-center justify-between px-3 py-1 xl:py-3 rounded-md cursor-pointer' onClick={()=>setIsFilter(!isFilter)}>
                             <span className='font-semibold'>Filter</span> {!isFilter ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
                         </div>
