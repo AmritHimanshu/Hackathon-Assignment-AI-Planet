@@ -96,7 +96,7 @@ function ChallengeCard({ challenge, idx }: ChallengeCardProps) {
     };
 
   return (
-    <div className="w-[354px] bg-white text-black rounded-xl">
+    <div className="w-[340px] overflow-hidden lg:w-[354px] h-[450px] bg-white text-black rounded-xl">
         <div className="h-[176px] overflow-hidden">
             <img src={challenge.file} alt="" />
         </div>
@@ -104,7 +104,7 @@ function ChallengeCard({ challenge, idx }: ChallengeCardProps) {
             <p className={`px-7 py-[1px] ${eventTime === 'Past' && 'bg-[#FF3C00]'} ${eventTime === 'Upcoming' && 'bg-yellow-400'} ${eventTime === 'Active' && 'bg-green-400'} bg-opacity-20 max-w-min m-auto rounded-sm text-[14px]`}>
                 {eventTime}
             </p>
-            <div className="font-bold w-[244px] m-auto text-[16px]">
+            <div className="font-bold w-[244px] h-[55px] overflow-y-hidden m-auto text-[16px]">
                 {challenge.challenge_name}
             </div>
             {eventTime === 'Past' && (

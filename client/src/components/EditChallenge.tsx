@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 function EditChallenge() {
@@ -90,7 +90,7 @@ function EditChallenge() {
                 </div>
             )}
             <div className='px-20 py-5 font-semibold text-[18px]'>
-                DPhi
+            <Link to="/">DPhi</Link>
             </div>
             <div className='px-20 py-9 font-semibold text-[25px] bg-slate-100'>
                 Challenge Details
