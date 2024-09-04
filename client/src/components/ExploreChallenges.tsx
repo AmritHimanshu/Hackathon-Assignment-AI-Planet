@@ -123,15 +123,15 @@ function ExploreChallenges() {
                                 <div className=' px-5 py-3 border-t-[1px] space-y-2'>
                                     <p className='text-[18px]'>Status</p>
                                     {/* <div className='space-x-2'><input type="checkbox" id="all" value="all" onChange={handleFilterStatus} /> <label htmlFor='all'>All</label></div> */}
-                                    <div className='space-x-2'><input type="checkbox" id="active" value="active" onChange={handleFilterStatus} /> <label htmlFor='active'>Active</label></div>
-                                    <div className='space-x-2'><input type="checkbox" id="upcoming" value="upcoming" onChange={handleFilterStatus} /> <label htmlFor='upcoming'>Upcoming</label></div>
-                                    <div className='space-x-2'><input type="checkbox" id="past" value="past" onChange={handleFilterStatus} /> <label htmlFor='past'>Past</label></div>
+                                    <div className='space-x-2'><input type="checkbox" id="active" value="active" checked={filterStatus.includes('active')} onChange={handleFilterStatus} /> <label htmlFor='active'>Active</label></div>
+                                    <div className='space-x-2'><input type="checkbox" id="upcoming" value="upcoming" checked={filterStatus.includes('upcoming')} onChange={handleFilterStatus} /> <label htmlFor='upcoming'>Upcoming</label></div>
+                                    <div className='space-x-2'><input type="checkbox" id="past" value="past" checked={filterStatus.includes('past')} onChange={handleFilterStatus} /> <label htmlFor='past'>Past</label></div>
                                 </div>
                                 <div className=' px-5 py-3 border-t-[1px] space-y-2'>
                                     <p className='text-[18px]'>Level</p>
-                                    <div className='space-x-2'><input type="checkbox" id="easy" value="Easy" onChange={handleFilterLevel} /> <label htmlFor='easy'>Easy</label></div>
-                                    <div className='space-x-2'><input type="checkbox" id="medium" value="Medium" onChange={handleFilterLevel} /> <label htmlFor='medium'>Medium</label></div>
-                                    <div className='space-x-2'><input type="checkbox" id="hard" value="Hard" onChange={handleFilterLevel} /> <label htmlFor='hard'>Hard</label></div>
+                                    <div className='space-x-2'><input type="checkbox" id="easy" value="Easy" checked={filterLevel.includes('Easy')} onChange={handleFilterLevel} /> <label htmlFor='easy'>Easy</label></div>
+                                    <div className='space-x-2'><input type="checkbox" id="medium" value="Medium" checked={filterLevel.includes('Medium')} onChange={handleFilterLevel} /> <label htmlFor='medium'>Medium</label></div>
+                                    <div className='space-x-2'><input type="checkbox" id="hard" value="Hard" checked={filterLevel.includes('Hard')} onChange={handleFilterLevel} /> <label htmlFor='hard'>Hard</label></div>
                                 </div>
                             </div>
                         )}
