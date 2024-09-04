@@ -60,17 +60,14 @@ function ExploreChallenges() {
     const filterChallenges = () => {
         let filteredList = challengeList ?? [];
 
-        // Filter by status
         if (filterStatus.length > 0) {
             filteredList = filteredList.filter(challenge => filterStatus.includes(getChallengeStatus(challenge)));
         }
 
-        // Filter by level
         if (filterLevel.length > 0) {
             filteredList = filteredList.filter(challenge => filterLevel.includes(challenge.level));
         }
 
-        // Filter by search query
         if (searchQuery) {
             filteredList = filteredList.filter(challenge => challenge.challenge_name.toLowerCase().includes(searchQuery.toLowerCase()));
         }
