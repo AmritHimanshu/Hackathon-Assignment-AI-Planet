@@ -132,6 +132,11 @@ function ExploreChallenges() {
                     ))}
 
                 </div>
+                {filteredChallengeList.length === 0 && (
+                        <div className='text-center text-[20px] font-bold'>
+                            No challenge created
+                        </div>
+                    )}
             </div>
         </div>
     )
