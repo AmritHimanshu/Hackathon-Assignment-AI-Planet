@@ -4,6 +4,8 @@ import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 function EditChallenge() {
 
+    const IMAGE_API = process.env.REACT_APP_IMAGE_API;
+
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const data = Object.fromEntries(queryParams.entries());
@@ -45,7 +47,7 @@ function EditChallenge() {
                 form.append("file", fileData);
                 form.append("upload_preset", "kfgw6ech");
 
-                const resCloudinary = await fetch(`https://api.cloudinary.com/v1_1/dgvvfyeji/raw/upload`, {
+                const resCloudinary = await fetch(`${IMAGE_API}`, {
                     method: "POST",
                     body: form,
                 });
