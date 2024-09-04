@@ -13,7 +13,7 @@ function App() {
             <Route path="/" element={<ChallengesList />} /> 
             <Route path="/create-challenge" element={<CreateChallenge />} />
             <Route path="/challenge-detail/:idx" element={<ChallengeDetails />} />
-            <Route path="edit-challenge/:idx" element={<EditChallenge />} />
+            <Route path="/edit-challenge/:idx" element={<EditChallenge />} />
           </Routes>
         </div>
       </Router>
