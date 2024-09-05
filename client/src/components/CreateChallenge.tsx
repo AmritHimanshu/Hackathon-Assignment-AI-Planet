@@ -92,7 +92,7 @@ function CreateChallenge() {
     return (
         <div className='relative'>
             {message && (
-                <div className={`sticky top-0 z-50 w-full p-4 text-[20px] text-black font-[500] ${message === "Successfully created" && "bg-green-300" }`}>
+                <div className={`sticky top-0 z-50 w-full p-4 text-[16px] lg:text-[20px] text-black font-[500] ${message === "Successfully created" && "bg-green-300" }`}>
                     {message}
                 </div>
             )}
