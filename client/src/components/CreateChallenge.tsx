@@ -46,6 +46,11 @@ function CreateChallenge() {
             return;
         }
 
+        if(new Date(start_date) > new Date(end_date)){
+            alert("Invalid time duration");
+            return;
+        }
+
         setIsLoading(true);
         const form = new FormData();
         form.append("file", file);
